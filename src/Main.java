@@ -16,15 +16,19 @@ public class Main {
             System.out.println("3. Registrar Cliente Mayorista");
             System.out.println("4. Mostrar todos los clientes");
             System.out.println("5. Buscar cliente por ID");
-            System.out.println("6. Salir");
+            System.out.println("6. Filtrar clientes por tipo");
+            System.out.println("7. Calcular total de compra");
+            System.out.println("8. Mostrar compras altas");
+            System.out.println("9. Cliente con mayor pago");
+            System.out.println("10. Salir");
             System.out.print("Opcion: ");
             opcion = sc.nextInt();
 
             switch (opcion) {
 
                 case 1:
-                    System.out.print("Nombre: ");
                     sc.nextLine();
+                    System.out.print("Nombre: ");
                     String nom = sc.nextLine();
 
                     System.out.print("ID: ");
@@ -37,8 +41,8 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.print("Nombre: ");
                     sc.nextLine();
+                    System.out.print("Nombre: ");
                     nom = sc.nextLine();
 
                     System.out.print("ID: ");
@@ -54,8 +58,8 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.print("Nombre: ");
                     sc.nextLine();
+                    System.out.print("Nombre: ");
                     nom = sc.nextLine();
 
                     System.out.print("ID: ");
@@ -81,7 +85,6 @@ public class Main {
                 case 5:
                     System.out.print("Ingrese ID a buscar: ");
                     int buscarId = sc.nextInt();
-
                     boolean encontrado = false;
 
                     for (Cliente c : lista) {
@@ -97,9 +100,70 @@ public class Main {
                         System.out.println("Cliente no encontrado.");
                     }
                     break;
+
+                case 6:
+                    System.out.println("1. Regular  2. Frecuente  3. Mayorista");
+                    int tipo = sc.nextInt();
+
+                    for (Cliente c : lista) {
+                        if ((tipo == 1 && c instanceof ClienteRegular) ||
+                                (tipo == 2 && c instanceof ClienteFrecuente) ||
+                                (tipo == 3 && c instanceof ClienteMayorista)) {
+
+                            System.out.println(c);
+                            System.out.println("----------------------");
+                        }
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("\n--- TOTAL DE COMPRAS ---");
+
+                    for (Cliente c : lista) {
+                        double total = c.calcularTotalPagar();
+                        c.imprimirResumen(total);
+                        System.out.println("----------------------");
+                    }
+                    break;
+
+                case 8:
+                    System.out.println("\n--- COMPRAS ALTAS ---");
+
+                    for (Cliente c : lista) {
+                        if (c.compraAlta()) {
+                            System.out.println(c);
+                            System.out.println("----------------------");
+                        }
+                    }
+                    break;
+
+                case 9:
+                    if (lista.isEmpty()) {
+                        System.out.println("No hay clientes registrados.");
+                        break;
+                    }
+
+                    Cliente mayor = lista.get(0);
+
+                    for (Cliente c : lista) {
+                        if (c.calcularTotalPagar() > mayor.calcularTotalPagar()) {
+                            mayor = c;
+                        }
+                    }
+
+                    System.out.println("\n--- CLIENTE CON MAYOR PAGO ---");
+                    System.out.println(mayor);
+                    break;
+
+                case 10:
+                    System.out.println("Saliendo del sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opcion invalida");
             }
 
-        } while (opcion != 6);
+        } while (opcion != 10);
 
         sc.close();
     }
